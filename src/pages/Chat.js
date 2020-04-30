@@ -52,7 +52,8 @@ export default class Chat extends Component {
       await db.ref("chats").push({
         content: this.state.content,
         timestamp: Date.now(),
-        uid: this.state.user.uid
+        uid: this.state.user.uid,
+        email: this.state.user.email
       });
       this.setState({ content: '' });
       chatArea.scrollBy(0, chatArea.scrollHeight);
@@ -73,19 +74,20 @@ export default class Chat extends Component {
         <Header />
         <div className="chat-area" ref={this.myRef}>
           {/* loading indicator */}
-          {this.state.loadingChats ? <div className="spinner-border text-success" role="status">
+          {this.state.loadingChats ? <div className="spinner-border  text-success" role="status">
             <span className="sr-only">Loading...</span>
           </div> : ""}
           {/* chat area */}
           {this.state.chats.map(chat => {
             return <p key={chat.timestamp} className={"chat-bubble " + (this.state.user.uid === chat.uid ? "current-user" : "")}>
-              <h5>{this.state.user.email}: </h5>
+              <p class="text-secondary">{chat.email}:</p>
               <p>{chat.content}</p>
               <span className="chat-time float-right">{this.formatTime(chat.timestamp)}</span>
             </p>
           })}
         </div>
-        <form onSubmit={this.handleSubmit} className="mx-3"><textarea className="form-control" name="content" onChange={this.handleChange} value={this.state.content}></textarea>
+        <form onSubmit={this.handleSubmit} className="mx-3">
+        <textarea className="form-control" name="content" onChange={this.handleChange} value={this.state.content}></textarea>
           {this.state.error ? <p className="text-danger">{this.state.error}</p> : null}
           <button type="submit" className="btn btn-submit px-5 mt-4">Send</button>
         </form>
