@@ -12,7 +12,7 @@ export default class Chat extends Component {
       content: '',
       readError: null,
       writeError: null,
-      loadingChats: false
+      loadingChats: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -40,7 +40,7 @@ export default class Chat extends Component {
 
   handleChange(event) {
     this.setState({
-      content: event.target.value
+      content: event.target.value,
     });
   }
 
@@ -66,12 +66,11 @@ export default class Chat extends Component {
     const time = `${d.getDate()}/${(d.getMonth()+1)}/${d.getFullYear()} ${d.getHours()}:${d.getMinutes()}`;
     return time;
   }
-
+  
   render() {
     return (
       <div>
         <Header />
-
         <div className="chat-area" ref={this.myRef}>
           {/* loading indicator */}
           {this.state.loadingChats ? <div className="spinner-border text-success" role="status">
@@ -80,14 +79,13 @@ export default class Chat extends Component {
           {/* chat area */}
           {this.state.chats.map(chat => {
             return <p key={chat.timestamp} className={"chat-bubble " + (this.state.user.uid === chat.uid ? "current-user" : "")}>
-              {chat.content}
-              <br />
+              <h5>{this.state.user.email}: </h5>
+              <p>{chat.content}</p>
               <span className="chat-time float-right">{this.formatTime(chat.timestamp)}</span>
             </p>
           })}
         </div>
-        <form onSubmit={this.handleSubmit} className="mx-3">
-          <textarea className="form-control" name="content" onChange={this.handleChange} value={this.state.content}></textarea>
+        <form onSubmit={this.handleSubmit} className="mx-3"><textarea className="form-control" name="content" onChange={this.handleChange} value={this.state.content}></textarea>
           {this.state.error ? <p className="text-danger">{this.state.error}</p> : null}
           <button type="submit" className="btn btn-submit px-5 mt-4">Send</button>
         </form>

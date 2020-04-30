@@ -7,6 +7,7 @@ export default class Login extends Component {
     super();
     this.state = {
       error: null,
+      nickName: "",
       email: "",
       password: ""
     };
